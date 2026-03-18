@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
 
   const loginWithGoogle = useCallback(() => {
     const callbackUrl = `${window.location.origin}${OAUTH_REDIRECT_PATH}`;
-    const oauthUrl = `${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${encodeURIComponent(callbackUrl)}`;
+    const oauthUrl = `${API_BASE_URL}/oauth2/authorization/google`;
     window.location.href = oauthUrl;
   }, []);
 
