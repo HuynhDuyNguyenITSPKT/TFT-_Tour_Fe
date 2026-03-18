@@ -1,11 +1,13 @@
 import { route } from 'preact-router';
 import { useEffect } from 'preact/hooks';
 import { useAuth } from '../hooks/useAuth';
+import { useI18n } from '../hooks/useI18n';
 import { userHasRole } from '../utils/auth';
 import { FullPageLoader } from './LoadingSkeleton';
 
 export default function ProtectedRoute({ component: Component, roles = [], ...props }) {
   const { isAuthenticated, isBootstrapping, user } = useAuth();
+  const { t } = useI18n();
 
   const isAllowed =
     isAuthenticated &&
@@ -25,11 +27,11 @@ export default function ProtectedRoute({ component: Component, roles = [], ...pr
   }, [isAuthenticated, isAllowed, isBootstrapping]);
 
   if (isBootstrapping) {
-    return <FullPageLoader message="Dang xac thuc phien dang nhap..." />;
+    return <FullPageLoader message={t('auth.verifyingSession')} />;
   }
 
   if (!isAllowed) {
-    return <FullPageLoader message="Dang chuyen huong..." />;
+    return <FullPageLoader message={t('auth.redirecting')} />;
   }
 
   return <Component {...props} />;

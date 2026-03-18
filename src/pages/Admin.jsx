@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
 import DashboardLayout from '../layouts/DashboardLayout';
+import { useI18n } from '../hooks/useI18n';
 import { useToast } from '../hooks/useToast';
 import { changeUserRole, deleteUser, getUsers } from '../api/adminApi';
 import { getErrorMessage } from '../utils/httpError';
@@ -7,6 +8,7 @@ import { getErrorMessage } from '../utils/httpError';
 const ROLE_OPTIONS = ['ROLE_USER', 'ROLE_ADMIN'];
 
 export default function AdminPage() {
+  const { t } = useI18n();
   const toast = useToast();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +21,7 @@ export default function AdminPage() {
       const response = await getUsers();
       setUsers(response.data || []);
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Khong the tai danh sach user.'));
+      toast.error(getErrorMessage(error, t('admin.usersLoadFailed')));
     } finally {
       setLoading(false);
     }
@@ -37,16 +39,16 @@ export default function AdminPage() {
       setUsers((prev) =>
         prev.map((user) => (user.id === userId ? { ...user, role: roleName } : user))
       );
-      toast.success('Cap nhat role thanh cong.');
+      toast.success(t('admin.roleUpdated'));
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Khong the cap nhat role.'));
+      toast.error(getErrorMessage(error, t('admin.roleUpdateFailed')));
     } finally {
       setSavingUserId(null);
     }
   }
 
   async function onDeleteUser(userId) {
-    const ok = window.confirm('Ban co chac chan muon xoa user nay?');
+    const ok = window.confirm(t('admin.confirmDelete'));
     if (!ok) return;
 
     setSavingUserId(userId);
@@ -54,20 +56,20 @@ export default function AdminPage() {
     try {
       await deleteUser(userId);
       setUsers((prev) => prev.filter((user) => user.id !== userId));
-      toast.success('Da xoa user.');
+      toast.success(t('admin.userDeleted'));
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Khong the xoa user.'));
+      toast.error(getErrorMessage(error, t('admin.userDeleteFailed')));
     } finally {
       setSavingUserId(null);
     }
   }
 
   return (
-    <DashboardLayout title="Admin" currentPath="/admin">
+    <DashboardLayout title={t('admin.title')} currentPath="/admin">
       <div class="section-head">
         <div>
-          <h3>User Management</h3>
-          <p class="muted">Quan ly tai khoan nguoi dung trong he thong.</p>
+          <h3>{t('admin.userManagement')}</h3>
+          <p class="muted">{t('admin.userManagementDesc')}</p>
         </div>
       </div>
 
@@ -75,16 +77,16 @@ export default function AdminPage() {
         <table class="data-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
+              <th>{t('admin.name')}</th>
+              <th>{t('admin.email')}</th>
+              <th>{t('admin.role')}</th>
+              <th>{t('admin.actions')}</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={4}>Dang tai user...</td>
+                <td colSpan={4}>{t('admin.loadingUsers')}</td>
               </tr>
             ) : users.length ? (
               users.map((user) => (
@@ -110,14 +112,14 @@ export default function AdminPage() {
                       onClick={() => onDeleteUser(user.id)}
                       disabled={savingUserId === user.id}
                     >
-                      Delete
+                      {t('admin.delete')}
                     </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={4}>Khong co user nao.</td>
+                <td colSpan={4}>{t('admin.noUsers')}</td>
               </tr>
             )}
           </tbody>

@@ -1,9 +1,11 @@
 import { route } from 'preact-router';
 import { useEffect } from 'preact/hooks';
 import { useAuth } from '../hooks/useAuth';
+import { useI18n } from '../hooks/useI18n';
 
 export default function LoginPage() {
   const { isAuthenticated, loginWithGoogle } = useAuth();
+  const { language, toggleLanguage, t } = useI18n();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -17,14 +19,17 @@ export default function LoginPage() {
       <div class="login-bg-orb orb-right" />
 
       <div class="login-card glass-card">
-        <p class="chip">Welcome</p>
-        <h1>Sign in to TFT Manager</h1>
+        <button class="ghost-btn" onClick={toggleLanguage}>
+          {t('topbar.language')}: {language.toUpperCase()}
+        </button>
+        <p class="chip">{t('login.welcome')}</p>
+        <h1>{t('login.title', { appName: t('app.name') })}</h1>
         <p class="login-caption">
-          Dang nhap bang Google de tiep tuc quan ly giai dau, projects va phan quyen user.
+          {t('login.caption')}
         </p>
 
         <button class="google-btn" onClick={loginWithGoogle}>
-          Login with Google Now
+          {t('login.googleButton')}
         </button>
       </div>
     </div>

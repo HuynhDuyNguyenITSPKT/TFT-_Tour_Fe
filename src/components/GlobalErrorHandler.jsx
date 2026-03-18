@@ -1,19 +1,19 @@
 import { useEffect } from 'preact/hooks';
+import { useI18n } from '../hooks/useI18n';
 import { useToast } from '../hooks/useToast';
 import { getErrorMessage } from '../utils/httpError';
 
 export default function GlobalErrorHandler() {
   const toast = useToast();
+  const { t } = useI18n();
 
   useEffect(() => {
     function onUnhandledError(event) {
-      toast.error(getErrorMessage(event?.error || event, 'Co loi khong mong muon da xay ra.'));
+      toast.error(getErrorMessage(event?.error || event, t('errors.unexpected')));
     }
 
     function onUnhandledRejection(event) {
-      toast.error(
-        getErrorMessage(event?.reason, 'Yeu cau that bai do loi he thong. Vui long thu lai.')
-      );
+      toast.error(getErrorMessage(event?.reason, t('errors.requestFailed')));
     }
 
     window.addEventListener('error', onUnhandledError);
@@ -23,7 +23,7 @@ export default function GlobalErrorHandler() {
       window.removeEventListener('error', onUnhandledError);
       window.removeEventListener('unhandledrejection', onUnhandledRejection);
     };
-  }, [toast]);
+  }, [toast, t]);
 
   return null;
 }

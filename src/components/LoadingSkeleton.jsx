@@ -1,3 +1,5 @@
+import { useI18n } from '../hooks/useI18n';
+
 export function SkeletonCard() {
   return (
     <div class="skeleton-card">
@@ -20,11 +22,13 @@ export function SkeletonProfile() {
   );
 }
 
-export function FullPageLoader({ message = 'Dang tai du lieu...' }) {
+export function FullPageLoader({ message }) {
+  const { t } = useI18n();
+
   return (
     <div class="fullpage-loader">
       <div class="loader-spinner" />
-      <p>{message}</p>
+      <p>{message || t('common.loadingData')}</p>
     </div>
   );
 }

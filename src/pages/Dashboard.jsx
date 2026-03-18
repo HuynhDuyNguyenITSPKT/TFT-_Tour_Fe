@@ -2,12 +2,14 @@ import { useState } from 'preact/hooks';
 import DashboardLayout from '../layouts/DashboardLayout';
 import Modal from '../components/Modal';
 import { useAuth } from '../hooks/useAuth';
+import { useI18n } from '../hooks/useI18n';
 import { useToast } from '../hooks/useToast';
 import { updateCurrentUser } from '../api/userApi';
 import { getErrorMessage } from '../utils/httpError';
 
 export default function DashboardPage() {
   const { user, fetchUser, setUser } = useAuth();
+  const { t } = useI18n();
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -24,10 +26,10 @@ export default function DashboardPage() {
     try {
       const response = await updateCurrentUser(form);
       setUser(response.data);
-      toast.success('Cap nhat profile thanh cong.');
+      toast.success(t('dashboard.profileUpdated'));
       setIsModalOpen(false);
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Cap nhat profile that bai.'));
+      toast.error(getErrorMessage(error, t('dashboard.profileUpdateFailed')));
     } finally {
       setIsSaving(false);
     }
@@ -36,14 +38,14 @@ export default function DashboardPage() {
   async function reloadProfile() {
     try {
       await fetchUser();
-      toast.success('Da tai lai thong tin user.');
+      toast.success(t('dashboard.profileReloaded'));
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Khong the tai profile.'));
+      toast.error(getErrorMessage(error, t('dashboard.profileReloadFailed')));
     }
   }
 
   return (
-    <DashboardLayout title="Dashboard" currentPath="/dashboard">
+    <DashboardLayout title={t('dashboard.title')} currentPath="/dashboard">
       <div class="panel-grid">
         <article class="panel profile-panel">
           <div class="profile-avatar-wrap">
@@ -54,8 +56,8 @@ export default function DashboardPage() {
             />
           </div>
           <div class="profile-body">
-            <h3>{user?.name || 'Unknown user'}</h3>
-            <p>{user?.email || 'No email'}</p>
+            <h3>{user?.name || t('dashboard.unknownUser')}</h3>
+            <p>{user?.email || t('dashboard.noEmail')}</p>
           </div>
           <div class="inline-actions">
             <button
@@ -69,42 +71,41 @@ export default function DashboardPage() {
                 setIsModalOpen(true);
               }}
             >
-              Edit Profile
+              {t('dashboard.editProfile')}
             </button>
             <button class="ghost-btn" onClick={reloadProfile}>
-              Reload
+              {t('dashboard.reload')}
             </button>
           </div>
         </article>
 
         <article class="panel metric-panel">
-          <p class="muted">Tong quan</p>
-          <h3>Welcome to your workspace</h3>
+          <p class="muted">{t('dashboard.overview')}</p>
+          <h3>{t('dashboard.workspaceTitle')}</h3>
           <p>
-            Chao mung ban quay lai. Tai day ban co the quan ly profile, du an va cac tinh nang
-            lien quan den giai dau.
+            {t('dashboard.workspaceDesc')}
           </p>
         </article>
       </div>
 
       <Modal
         open={isModalOpen}
-        title="Update profile"
+        title={t('dashboard.updateProfileTitle')}
         onClose={() => setIsModalOpen(false)}
         footer={
           <>
             <button class="ghost-btn" onClick={() => setIsModalOpen(false)}>
-              Cancel
+              {t('dashboard.cancel')}
             </button>
             <button class="primary-btn" onClick={onSubmit} disabled={isSaving}>
-              {isSaving ? 'Saving...' : 'Save changes'}
+              {isSaving ? t('dashboard.saving') : t('dashboard.saveChanges')}
             </button>
           </>
         }
       >
         <form class="stack-form" onSubmit={onSubmit}>
           <label>
-            Name
+            {t('dashboard.name')}
             <input
               value={form.name}
               onInput={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
@@ -112,7 +113,7 @@ export default function DashboardPage() {
             />
           </label>
           <label>
-            Email
+            {t('dashboard.email')}
             <input
               type="email"
               value={form.email}
@@ -121,7 +122,7 @@ export default function DashboardPage() {
             />
           </label>
           <label>
-            Avatar URL
+            {t('dashboard.avatarUrl')}
             <input
               value={form.avatar}
               onInput={(event) => setForm((prev) => ({ ...prev, avatar: event.target.value }))}

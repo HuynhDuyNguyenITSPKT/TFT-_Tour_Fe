@@ -1,11 +1,13 @@
 import { useEffect } from 'preact/hooks';
 import { route } from 'preact-router';
 import { useAuth } from '../hooks/useAuth';
+import { useI18n } from '../hooks/useI18n';
 import { useToast } from '../hooks/useToast';
 import { clearTokenParamsFromUrl, readOAuthTokensFromLocation } from '../utils/tokenStorage';
 
 export default function OAuthCallbackPage() {
   const { fetchUser } = useAuth();
+  const { t } = useI18n();
   const toast = useToast();
 
   useEffect(() => {
@@ -13,7 +15,7 @@ export default function OAuthCallbackPage() {
       const tokens = readOAuthTokensFromLocation();
 
       if (!tokens?.accessToken || !tokens?.refreshToken) {
-        toast.error('Khong tim thay token sau khi dang nhap Google.');
+        toast.error(t('auth.missingToken'));
         route('/login', true);
         return;
       }
@@ -25,10 +27,10 @@ export default function OAuthCallbackPage() {
 
       try {
         await fetchUser();
-        toast.success('Dang nhap thanh cong.');
+        toast.success(t('auth.loginSuccess'));
         route('/', true);
       } catch {
-        toast.error('Khong the tai thong tin user.');
+        toast.error(t('auth.loadUserFailed'));
         route('/login', true);
       }
     }
@@ -39,7 +41,7 @@ export default function OAuthCallbackPage() {
   return (
     <div class="fullpage-loader">
       <div class="loader-spinner" />
-      <p>Dang xu ly dang nhap OAuth2...</p>
+      <p>{t('auth.processingOAuth')}</p>
     </div>
   );
 }
