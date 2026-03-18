@@ -24,7 +24,7 @@ export default function LoginPage() {
         </p>
 
         <button class="google-btn" onClick={loginWithGoogle}>
-          Login with Google
+          Login with Google Now
         </button>
       </div>
     </div>
