@@ -79,7 +79,11 @@ export function AuthProvider({ children }) {
         if (oauthTokens) {
           syncTokens(oauthTokens);
           clearTokenParamsFromUrl();
+
+          await fetchUser(); // 🔥 thêm dòng này
+
           route('/', true);
+          return; // 🔥 thêm luôn
         }
 
         if (!getAccessToken() && getRefreshToken()) {
