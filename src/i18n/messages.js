@@ -168,6 +168,8 @@ export const messages = {
       processingOAuth: 'Đang xử lý đăng nhập OAuth2...',
       missingToken: 'Không tìm thấy token sau khi đăng nhập Google.',
       loginSuccess: 'Đăng nhập thành công.',
+      loginEmailSubject: '[{appName}] Đăng nhập thành công',
+      loginEmailContent: 'Xin chào {name}, bạn vừa đăng nhập thành công vào {appName}. Nếu không phải bạn, vui lòng đổi mật khẩu ngay.',
       loadUserFailed: 'Không thể tải thông tin người dùng.',
       verifyingSession: 'Đang xác thực phiên đăng nhập...',
       redirecting: 'Đang chuyển hướng...'
@@ -433,6 +435,8 @@ export const messages = {
       processingOAuth: 'Processing OAuth2 sign-in...',
       missingToken: 'Token not found after Google sign-in.',
       loginSuccess: 'Signed in successfully.',
+      loginEmailSubject: '[{appName}] Login successful',
+      loginEmailContent: 'Hello {name}, you have successfully signed in to {appName}. If this was not you, please change your password immediately.',
       loadUserFailed: 'Unable to load user information.',
       verifyingSession: 'Verifying session...',
       redirecting: 'Redirecting...'
