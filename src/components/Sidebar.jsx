@@ -25,7 +25,9 @@ export default function Sidebar({ currentPath }) {
       </div>
 
       <nav class="sidebar-nav">
+        <SidebarItem href="/" activePath={currentPath} label={t('nav.home')} />
         <SidebarItem href="/dashboard" activePath={currentPath} label={t('nav.dashboard')} />
+        <SidebarItem href="/posts/me" activePath={currentPath} label={t('nav.myPosts')} />
         {userHasRole(user, 'ADMIN') ? (
           <SidebarItem href="/admin" activePath={currentPath} label={t('nav.admin')} />
         ) : null}

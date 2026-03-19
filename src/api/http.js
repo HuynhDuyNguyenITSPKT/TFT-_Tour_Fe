@@ -82,7 +82,7 @@ http.interceptors.response.use(
       const nextRefreshToken = refreshResponse?.data?.refreshToken || refreshToken;
 
       if (!nextAccessToken) {
-        throw new Error('Khong nhan duoc access token moi.');
+        throw new Error('Không nhận được access token mới.');
       }
 
       setTokens({

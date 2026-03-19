@@ -1,8 +1,11 @@
 import { Router } from 'preact-router';
 import Login from './pages/Login';
 import OAuthCallbackPage from './pages/OAuthCallback';
+import HomePage from './pages/Home';
 import DashboardPage from './pages/Dashboard';
 import AdminPage from './pages/Admin';
+import TopicDetailPage from './pages/TopicDetail';
+import MyPostsPage from './pages/MyPosts';
 import NotFoundPage from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import GlobalErrorHandler from './components/GlobalErrorHandler';
@@ -21,7 +24,9 @@ export function App() {
           <Router>
             <Login path="/login" />
             <OAuthCallbackPage path="/auth/callback" />
-            <ProtectedRoute path="/" component={DashboardPage} />
+            <ProtectedRoute path="/" component={HomePage} />
+            <ProtectedRoute path="/topics/:topicId" component={TopicDetailPage} />
+            <ProtectedRoute path="/posts/me" component={MyPostsPage} />
             <ProtectedRoute path="/dashboard" component={DashboardPage} />
             <ProtectedRoute path="/admin" component={AdminPage} roles={['ADMIN']} />
             <NotFoundPage default />

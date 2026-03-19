@@ -25,17 +25,36 @@ export function isTokenExpired(token, offsetSeconds = 15) {
 }
 
 export function normalizeRole(role) {
-  if (!role || typeof role !== 'string') return '';
-  return role.replace(/^ROLE_/, '');
+  if (!role) return '';
+
+  if (typeof role === 'string') {
+    return role.trim().replace(/^ROLE_/i, '').toUpperCase();
+  }
+
+  if (typeof role === 'object') {
+    const nested = role.name || role.role || role.roleName || role.authority;
+    return normalizeRole(nested);
+  }
+
+  return '';
 }
 
 export function userHasRole(user, role) {
   const target = normalizeRole(role);
   if (!target) return false;
 
-  if (Array.isArray(user?.roles)) {
-    return user.roles.map(normalizeRole).includes(target);
-  }
+  const values = [];
 
-  return normalizeRole(user?.role) === target;
+  if (user?.role) values.push(user.role);
+  if (user?.roleName) values.push(user.roleName);
+  if (Array.isArray(user?.roles)) values.push(...user.roles);
+  if (Array.isArray(user?.authorities)) values.push(...user.authorities);
+
+  if (!values.length) return false;
+
+  const normalizedValues = values.map(normalizeRole).filter(Boolean);
+
+  if (!normalizedValues.length) return false;
+
+  return normalizedValues.includes(target);
 }

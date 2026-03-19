@@ -27,8 +27,12 @@ export function AuthProvider({ children }) {
     if (!tokens) return;
 
     setTokens(tokens);
-    if (tokens.accessToken) setAccessToken(tokens.accessToken);
-    if (tokens.refreshToken) setRefreshToken(tokens.refreshToken);
+    if ('accessToken' in tokens) {
+      setAccessToken(tokens.accessToken || null);
+    }
+    if ('refreshToken' in tokens) {
+      setRefreshToken(tokens.refreshToken || null);
+    }
   }, []);
 
   const logout = useCallback((redirectToLogin = true) => {
@@ -140,12 +144,13 @@ export function AuthProvider({ children }) {
       user,
       isAuthenticated: Boolean(accessToken),
       isBootstrapping,
+      syncTokens,
       loginWithGoogle,
       logout,
       fetchUser,
       setUser
     }),
-    [accessToken, refreshToken, user, isBootstrapping, loginWithGoogle, logout, fetchUser]
+    [accessToken, refreshToken, user, isBootstrapping, syncTokens, loginWithGoogle, logout, fetchUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

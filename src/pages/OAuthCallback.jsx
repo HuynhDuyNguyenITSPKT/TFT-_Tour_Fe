@@ -6,7 +6,7 @@ import { useToast } from '../hooks/useToast';
 import { clearTokenParamsFromUrl, readOAuthTokensFromLocation } from '../utils/tokenStorage';
 
 export default function OAuthCallbackPage() {
-  const { fetchUser } = useAuth();
+  const { fetchUser, syncTokens } = useAuth();
   const { t } = useI18n();
   const toast = useToast();
 
@@ -14,15 +14,13 @@ export default function OAuthCallbackPage() {
     async function handleOAuthResult() {
       const tokens = readOAuthTokensFromLocation();
 
-      if (!tokens?.accessToken || !tokens?.refreshToken) {
+      if (!tokens?.accessToken) {
         toast.error(t('auth.missingToken'));
         route('/login', true);
         return;
       }
 
-      localStorage.setItem('accessToken', tokens.accessToken);
-      localStorage.setItem('refreshToken', tokens.refreshToken);
-      window.dispatchEvent(new CustomEvent('auth:tokenRefreshed'));
+      syncTokens(tokens);
       clearTokenParamsFromUrl();
 
       try {
@@ -36,7 +34,7 @@ export default function OAuthCallbackPage() {
     }
 
     handleOAuthResult();
-  }, [fetchUser, toast]);
+  }, [fetchUser, syncTokens, toast, t]);
 
   return (
     <div class="fullpage-loader">
