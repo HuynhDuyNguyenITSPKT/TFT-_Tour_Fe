@@ -1,6 +1,6 @@
 import { route } from 'preact-router';
 import { useEffect, useMemo, useState } from 'preact/hooks';
-import DashboardLayout from '../layouts/DashboardLayout';
+import UserLayout from '../layouts/UserLayout';
 import Modal from '../components/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { useI18n } from '../hooks/useI18n';
@@ -139,7 +139,7 @@ export default function TopicDetailPage({ topicId }) {
   }
 
   return (
-    <DashboardLayout title={topic?.name || t('topicDetail.title')} currentPath="/">
+    <UserLayout title={topic?.name || t('topicDetail.title')} currentPath="/">
       <div class="section-head">
         <div>
           <h3>{topic?.name || t('topicDetail.title')}</h3>
@@ -228,7 +228,7 @@ export default function TopicDetailPage({ topicId }) {
           </label>
         </form>
       </Modal>
-    </DashboardLayout>
+    </UserLayout>
   );
 }
 

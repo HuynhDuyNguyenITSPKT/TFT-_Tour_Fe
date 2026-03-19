@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
-import DashboardLayout from '../layouts/DashboardLayout';
+import { route } from 'preact-router';
+import AdminLayout from '../layouts/AdminLayout';
 import Modal from '../components/Modal';
 import { useI18n } from '../hooks/useI18n';
 import { useToast } from '../hooks/useToast';
@@ -164,7 +165,16 @@ export default function AdminPage() {
   }
 
   return (
-    <DashboardLayout title={t('admin.title')} currentPath="/admin">
+    <AdminLayout title={t('admin.title')} currentPath="/admin">
+      <div class="admin-shortcuts">
+        <button class="ghost-btn" onClick={() => route('/admin/categories', true)}>
+          {t('admin.goCategories')}
+        </button>
+        <button class="ghost-btn" onClick={() => route('/admin/products', true)}>
+          {t('admin.goProducts')}
+        </button>
+      </div>
+
       <div class="section-head">
         <div>
           <h3>{t('admin.userManagement')}</h3>
@@ -321,6 +331,6 @@ export default function AdminPage() {
           </label>
         </form>
       </Modal>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

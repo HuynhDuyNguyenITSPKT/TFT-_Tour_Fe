@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks';
-import DashboardLayout from '../layouts/DashboardLayout';
+import UserLayout from '../layouts/UserLayout';
 import Modal from '../components/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { useI18n } from '../hooks/useI18n';
@@ -45,7 +45,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <DashboardLayout title={t('dashboard.title')} currentPath="/dashboard">
+    <UserLayout title={t('dashboard.title')} currentPath="/dashboard">
       <div class="panel-grid">
         <article class="panel profile-panel">
           <div class="profile-avatar-wrap">
@@ -130,6 +130,6 @@ export default function DashboardPage() {
           </label>
         </form>
       </Modal>
-    </DashboardLayout>
+    </UserLayout>
   );
 }

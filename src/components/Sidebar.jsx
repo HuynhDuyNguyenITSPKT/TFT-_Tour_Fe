@@ -1,7 +1,4 @@
 import { route } from 'preact-router';
-import { useAuth } from '../hooks/useAuth';
-import { useI18n } from '../hooks/useI18n';
-import { userHasRole } from '../utils/auth';
 
 function SidebarItem({ href, activePath, label }) {
   const active = activePath === href;
@@ -13,24 +10,30 @@ function SidebarItem({ href, activePath, label }) {
   );
 }
 
-export default function Sidebar({ currentPath }) {
-  const { user } = useAuth();
-  const { t } = useI18n();
+export default function Sidebar({
+  currentPath,
+  items = [],
+  brandEyebrow,
+  brandName,
+  variant = 'user'
+}) {
 
   return (
-    <aside class="sidebar">
+    <aside class={`sidebar sidebar-${variant}`}>
       <div class="brand-block">
-        <p class="brand-eyebrow">{t('app.eyebrow')}</p>
-        <h2>{t('app.name')}</h2>
+        <p class="brand-eyebrow">{brandEyebrow}</p>
+        <h2>{brandName}</h2>
       </div>
 
       <nav class="sidebar-nav">
-        <SidebarItem href="/" activePath={currentPath} label={t('nav.home')} />
-        <SidebarItem href="/dashboard" activePath={currentPath} label={t('nav.dashboard')} />
-        <SidebarItem href="/posts/me" activePath={currentPath} label={t('nav.myPosts')} />
-        {userHasRole(user, 'ADMIN') ? (
-          <SidebarItem href="/admin" activePath={currentPath} label={t('nav.admin')} />
-        ) : null}
+        {items.map((item) => (
+          <SidebarItem
+            key={item.href}
+            href={item.href}
+            activePath={currentPath}
+            label={item.label}
+          />
+        ))}
       </nav>
     </aside>
   );

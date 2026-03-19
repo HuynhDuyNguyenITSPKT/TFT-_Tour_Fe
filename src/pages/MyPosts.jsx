@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
-import DashboardLayout from '../layouts/DashboardLayout';
+import UserLayout from '../layouts/UserLayout';
 import Modal from '../components/Modal';
 import { useI18n } from '../hooks/useI18n';
 import { useToast } from '../hooks/useToast';
@@ -99,7 +99,7 @@ export default function MyPostsPage() {
   }
 
   return (
-    <DashboardLayout title={t('myPosts.title')} currentPath="/posts/me">
+    <UserLayout title={t('myPosts.title')} currentPath="/posts/me">
       <div class="section-head">
         <div>
           <h3>{t('myPosts.heading')}</h3>
@@ -173,7 +173,7 @@ export default function MyPostsPage() {
           </label>
         </form>
       </Modal>
-    </DashboardLayout>
+    </UserLayout>
   );
 }
 

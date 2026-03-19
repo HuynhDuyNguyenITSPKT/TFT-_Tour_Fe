@@ -1,6 +1,6 @@
 import { route } from 'preact-router';
 import { useEffect, useState } from 'preact/hooks';
-import DashboardLayout from '../layouts/DashboardLayout';
+import UserLayout from '../layouts/UserLayout';
 import { SkeletonCard } from '../components/LoadingSkeleton';
 import { useI18n } from '../hooks/useI18n';
 import { useToast } from '../hooks/useToast';
@@ -31,7 +31,7 @@ export default function HomePage() {
   }, [t, toast]);
 
   return (
-    <DashboardLayout title={t('home.title')} currentPath="/">
+    <UserLayout title={t('home.title')} currentPath="/">
       <div class="section-head">
         <div>
           <h3>{t('home.topicList')}</h3>
@@ -58,6 +58,6 @@ export default function HomePage() {
       {!loading && topics.length === 0 ? (
         <div class="empty-state">{t('home.noTopics')}</div>
       ) : null}
-    </DashboardLayout>
+    </UserLayout>
   );
 }
