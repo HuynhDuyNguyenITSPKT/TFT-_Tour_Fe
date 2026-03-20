@@ -294,7 +294,7 @@ export const messages = {
     login: {
       welcome: 'Welcome',
       title: 'Sign in to {appName}',
-      caption: 'Sign in with Google to continue managing tournaments and user permissions.',
+      caption: 'Sign in with Google to continue managing tournaments and user permissions',
       googleButton: 'Continue with Google'
     },
     dashboard: {
